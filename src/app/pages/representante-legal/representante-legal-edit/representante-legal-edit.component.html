@@ -1,0 +1,48 @@
+<!-- <h1 mat-dialog-title>Hi {{dataNegocio.abrivatura}}</h1> -->
+<h1 mat-dialog-title>REGISTRO DE REP. LEGAL</h1>
+<div mat-dialog-content>
+  <form class="example-container" [formGroup]="form" #f="ngForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Numero de Partida</mat-label>
+      <input matInput placeholder="N° Partida" required formControlName="numeroPartida" minlength="4" maxlength="4" #message>
+      <mat-hint align="start" ><mat-label style="color: forestgreen;">Min 4 - Max 4 caracteres</mat-label> </mat-hint>
+      <mat-hint align="end"><mat-label style="color: forestgreen;">{{message.value.length}} / 4</mat-label></mat-hint>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Razon Social</mat-label>
+      <input matInput placeholder="Razon Social" required formControlName="razonSocial">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Tipo de Doc.</mat-label>
+      <mat-select [(value)]="tipoDoc" >
+        <mat-option *ngFor="let item of tipoDocumentos" [value]="item.idTipoDocumento">{{item.denominacion}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>    
+    <mat-form-field appearance="fill">
+      <mat-label>Número de Documento</mat-label>
+      <input matInput placeholder="N° Documento" required formControlName="numeroDocumento">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Dirección</mat-label>
+      <input matInput placeholder="Dirección" required formControlName="direccion">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Correo</mat-label>
+      <input matInput placeholder="Correo" required formControlName="correo">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Teléfono</mat-label>
+      <input matInput placeholder="Teléfono" required formControlName="telefoMovil">
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button color="primary" type="button" (click)="save()" [disabled]="f.invalid">Guardar</button>
+  <button mat-button color="accent" (click)="cerrar()">Cancelar</button>
+</div>

@@ -1,0 +1,46 @@
+<form class="example-container" [formGroup]="form" #f="ngForm" (ngSubmit)="save()">
+    <div formGroupName="personal" class="container">
+
+    </div>
+    <div formGroupName="persona" class="container">
+        <mat-form-field>
+          <input matInput placeholder="Nombre y Apellido" required formControlName="razonSocial">
+        </mat-form-field>
+  
+        <mat-form-field>
+          <mat-select placeholder="Tipo Documento" formControlName="tipoDocumento">
+            <mat-option *ngFor="let tipoDocumento of tipoDocumentos" [value]="tipoDocumento">
+              {{tipoDocumento.abreviatura}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+  
+        <mat-form-field>
+          <input matInput placeholder="Numero Documento" required formControlName="numeroDocumento" minLength="8"
+            maxlength="20">
+        </mat-form-field>
+      
+        <mat-form-field>
+          <input matInput placeholder="N° Celular" required formControlName="telefoMovil" type="number">
+        </mat-form-field>
+  
+        <mat-form-field>
+          <input matInput placeholder="Direccion" required formControlName="direccion">
+        </mat-form-field>
+  
+        <mat-form-field>
+          <input matInput placeholder="Correo Electronico" formControlName="correo">
+        </mat-form-field>
+  
+      </div>
+      <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
+        <mat-icon>done</mat-icon>
+        <span>Aceptar</span>
+      </button>
+      <button mat-raised-button color="accent" (click)="cancel()" type="button">
+        <mat-icon>close</mat-icon>
+        <span>Cancelar</span>
+      </button>
+
+
+</form>

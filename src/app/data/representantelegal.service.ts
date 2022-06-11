@@ -21,14 +21,27 @@ export class RepresentantelegalService {
     return this.generic.all(basePath).all("registrar").post(data);
   }
 
+  listarPorId(id: number): Observable<any> {
+    return this.generic.all(basePath).one("listar", id).get();
+  }
+
+  actualizar(data:any){
+    return this.generic.all(basePath).all("modificar").put(data);
+  }
+
+  //http://localhost:9091/api/representantes/eliminar/1
+  eliminar(id: number){
+    return this.generic.all(basePath).one("eliminar", id).delete();
+  }
+
 
   //get y set
-getNotificarGuardado(){
-  return this.notificarGuardado.asObservable();
-}
+  getNotificarGuardado() {
+    return this.notificarGuardado.asObservable();
+  }
 
-setNotificarGuardado(repLegal: any){
-  return this.notificarGuardado.next(repLegal);
-}
+  setNotificarGuardado(repLegal: any) {
+    return this.notificarGuardado.next(repLegal);
+  }
 
 }

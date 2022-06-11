@@ -1,17 +1,17 @@
 <!-- <h1 mat-dialog-title>Hi {{dataNegocio.abrivatura}}</h1> -->
-<h1 mat-dialog-title>REGISTRO DE REP. LEGAL</h1>
+<h1 style="width: 300px; text-align: center;" mat-dialog-title>{{titulo}}</h1>
 <div mat-dialog-content>
   <form class="example-container" [formGroup]="form" #f="ngForm">
     <mat-form-field appearance="fill">
       <mat-label>Numero de Partida</mat-label>
-      <input matInput placeholder="N° Partida" required formControlName="numeroPartida" minlength="4" maxlength="4" #message>
-      <mat-hint align="start" ><mat-label style="color: forestgreen;">Min 4 - Max 4 caracteres</mat-label> </mat-hint>
+      <input matInput placeholder="N° Partida" formControlName="numeroPartida" minlength="4" maxlength="4" #message>
+      <mat-hint align="start" ><mat-label style="color: forestgreen;">Max 4 dígitos</mat-label> </mat-hint>
       <mat-hint align="end"><mat-label style="color: forestgreen;">{{message.value.length}} / 4</mat-label></mat-hint>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Razon Social</mat-label>
-      <input matInput placeholder="Razon Social" required formControlName="razonSocial">
+      <input matInput placeholder="Razon Social" formControlName="razonSocial">
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
@@ -19,30 +19,50 @@
       <mat-select [(value)]="tipoDoc" >
         <mat-option *ngFor="let item of tipoDocumentos" [value]="item.idTipoDocumento">{{item.denominacion}}</mat-option>
       </mat-select>
-    </mat-form-field>
-    <br>    
-    <mat-form-field appearance="fill">
-      <mat-label>Número de Documento</mat-label>
-      <input matInput placeholder="N° Documento" required formControlName="numeroDocumento">
-    </mat-form-field>
+    </mat-form-field>  
     <br>
+
+    <div *ngIf="tipoDoc">
+      <div *ngIf="comprobarSiEsRuc(); else esDNI">
+        <mat-form-field appearance="fill">
+          <mat-label>Número de RUC</mat-label>
+          <input matInput placeholder="N° Documento" formControlName="numeroDocumento" minlength="11" maxlength="11" #message>
+          <mat-hint align="start" ><mat-label style="color: forestgreen;">Max 11 dígitos</mat-label> </mat-hint>
+          <mat-hint align="end"><mat-label style="color: forestgreen;">{{message.value.length}} / 11</mat-label></mat-hint>
+        </mat-form-field>
+        <br>
+      </div>
+  
+      <ng-template #esDNI>
+        <mat-form-field appearance="fill">
+          <mat-label>Número de DNI</mat-label>
+          <input matInput placeholder="N° Documento" formControlName="numeroDocumento" minlength="8" maxlength="8" #message>
+          <mat-hint align="start" ><mat-label style="color: forestgreen;">Max 8 dígitos</mat-label> </mat-hint>
+          <mat-hint align="end"><mat-label style="color: forestgreen;">{{message.value.length}} / 8</mat-label></mat-hint>        
+        </mat-form-field>
+        <br>
+      </ng-template>
+    </div>
+    
     <mat-form-field appearance="fill">
       <mat-label>Dirección</mat-label>
-      <input matInput placeholder="Dirección" required formControlName="direccion">
+      <input matInput placeholder="Dirección" formControlName="direccion">
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Correo</mat-label>
-      <input matInput placeholder="Correo" required formControlName="correo">
+      <input matInput placeholder="Correo" formControlName="correo">
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
-      <mat-label>Teléfono</mat-label>
-      <input matInput placeholder="Teléfono" required formControlName="telefoMovil">
+      <mat-label>Celular</mat-label>
+      <input matInput placeholder="Celular" formControlName="telefoMovil" minlength="8" maxlength="8" #message>
+      <mat-hint align="start" ><mat-label style="color: forestgreen;">Max 9 dígitos</mat-label> </mat-hint>
+      <mat-hint align="end"><mat-label style="color: forestgreen;">{{message.value.length}} / 8</mat-label></mat-hint> 
     </mat-form-field>
   </form>
 </div>
-<div mat-dialog-actions>
+<div style="text-align: center;" mat-dialog-actions>
   <button mat-button color="primary" type="button" (click)="save()" [disabled]="f.invalid">Guardar</button>
   <button mat-button color="accent" (click)="cerrar()">Cancelar</button>
 </div>

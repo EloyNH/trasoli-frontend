@@ -19,7 +19,7 @@ export class RepresentanteLegalComponent implements OnInit {
 
   listaRepresentanteLegal: any[] = [];
 
-  displayedColumns: string[] = ['idRepresentanteLegal', 'numeroPartida', 'razonSocial', 'denominacion', 'numeroDocumento', 'direccion', 'correo', 'telefoMovil', 'accion'];
+  displayedColumns: string[] = ['numeroPartida', 'razonSocial', 'denominacion', 'numeroDocumento', 'direccion', 'correo', 'telefoMovil', 'accion'];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -34,23 +34,25 @@ export class RepresentanteLegalComponent implements OnInit {
 
     this.cargarGrilla();
 
+    //Cuando guarda tiene que consultar la base de datos
     this.dataService.representantes().getNotificarGuardado().subscribe(response => {
-      //console.log('getNotificarGuardado');
-      //console.log(response);
-
       this.cargarGrilla();
       
     });
   }
 
-  openDialog(giroNegocio?: any): void {
+  openDialog(replegalRow?: any): void {
     const dialogRef = this.dialog.open(RepresentanteLegalEditComponent, {
-      data: giroNegocio,
+      data: replegalRow,
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
+  }
+
+  eliminar(replegalRow?: any): void{
+    
   }
 
   cargarGrilla() {

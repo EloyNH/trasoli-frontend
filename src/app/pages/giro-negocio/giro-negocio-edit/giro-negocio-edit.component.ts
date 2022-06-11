@@ -28,7 +28,10 @@ export class GiroNegocioEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataNegocio=this.data;
+    
+
     this.initFormBuilder();
+
     if (this.dataNegocio) {
       this.loadDataFrom();
     } 
@@ -48,6 +51,8 @@ export class GiroNegocioEditComponent implements OnInit {
     if (this.dataNegocio!=null && this.dataNegocio.idGiroNegocio>0) {
       this.dataService.giroNegocios().listarPorId(this.dataNegocio.idGiroNegocio).subscribe(data => {
         this.form.patchValue(data);
+        console.log(data);
+        
       });
     }
   }

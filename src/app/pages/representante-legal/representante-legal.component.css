@@ -2,10 +2,6 @@ table {
   width: 100%;
 }
 
-.mat-form-field {
-  font-size: 14px;
-  width: 100%;
-}
 
 /* td, th {
   width: 25%;
@@ -19,6 +15,12 @@ table {
 }
 
 .mat-column-telefoMovil {
+  width: 80px;
+  padding-right: 24px;
+  text-align: center;
+}
+
+.mat-column-accion {
   width: 80px;
   padding-right: 24px;
   text-align: center;

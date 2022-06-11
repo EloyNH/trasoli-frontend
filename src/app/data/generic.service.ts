@@ -6,17 +6,17 @@ import { Configuration } from 'src/config/mega.config';
 @Injectable({
   providedIn: 'root'
 })
-export class GenericService{
+export class GenericService {
 
   private url: string;
 
   constructor(
-    private _http: HttpClient, 
+    private _http: HttpClient,
     private configuration: Configuration
     //@Inject("url") protected url:string
-  ) { 
+  ) {
     //http://localhost:9091/api
-    this.url = configuration.api; 
+    this.url = this.configuration.api;
   }
 
   get path() {
@@ -70,32 +70,8 @@ export class GenericService{
       catchError((res) => { return this.onError(res); }));
   }
 
-  /*
-  listar(){
-    return this._http.get<T[]>(this.url);
-  }
-
-  listarPorId(id:number){
-    return this._http.get<T>(`${this.url}/${id}`);
-  }
-
-  registrar(data:T){
-    return this._http.post(this.url,data);
-  }
-
-  modificar(data:T){
-    //http://localhost:9091/api/giro-negocios
-    return this._http.put(this.url,data);
-  }
-
-  eliminar(id:number){
-    //http://localhost:9091/api/giro-negocios/1
-    return this._http.delete(`${this.url}/${id}`);
-  }
-  */
-
   clone(): GenericService {
-    return new GenericService(this._http, {api: this.url});
+    return new GenericService(this._http, { api: this.url });
   }
 
   onError(error: any) {

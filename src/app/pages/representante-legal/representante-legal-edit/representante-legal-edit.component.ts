@@ -1,7 +1,7 @@
 import { Persona, RepresentanteLegal, RepresentanteLegalDTO, TipoDocumento } from './../../../model/RepresentanteLegal';
 import { TipoDocumentoService } from 'src/app/data/tipo-documento.service';
 import { RepresentanteLegalComponent } from './../representante-legal.component';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -10,6 +10,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { catchError, finalize } from 'rxjs/operators';
 import { of, switchMap } from 'rxjs';
 import { DataService } from 'src/app/data/data.service';
+import { RepresentanteLegalBaseDatos } from 'src/app/model/repLegalRespuestaBD';
 
 @Component({
   selector: 'app-representante-legal-edit',
@@ -19,29 +20,47 @@ import { DataService } from 'src/app/data/data.service';
 export class RepresentanteLegalEditComponent implements OnInit {
 
 
+  titulo:string = "Registrar Rep. Legal"
+
   form: FormGroup;
 
-  representanteLegalDTO:RepresentanteLegalDTO = new RepresentanteLegalDTO();
-  repLegal:RepresentanteLegal = new RepresentanteLegal();
-  persona:Persona = new Persona();
-  tipoDocumento:TipoDocumento = new TipoDocumento();  
+  dataRepresentanteLegal: any;
+
+  repLegalQueVieneDeBD: RepresentanteLegalBaseDatos = new RepresentanteLegalBaseDatos();
+
+  representanteLegalDTO: RepresentanteLegalDTO = new RepresentanteLegalDTO();
+  repLegal: RepresentanteLegal = new RepresentanteLegal();
+  persona: Persona = new Persona();
+  tipoDocumento: TipoDocumento = new TipoDocumento();
 
   tipoDoc: number;
 
 
-  tipoDocumentos:TipoDocumento[];
+  tipoDocumentos: TipoDocumento[];
 
 
   constructor(
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<RepresentanteLegalComponent>,
-    private dataService:DataService,
+    private dataService: DataService,
     private spinner: NgxSpinnerService,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
   ngOnInit(): void {
+
+    //DATA QUE VIENE CUANDO SE PRESIONA LA OPCION EDITAR EN EL COMPONENTE PADRE
+    this.dataRepresentanteLegal = this.data;
+
+    if (this.dataRepresentanteLegal) {
+      this.loadDataFrom();
+    }
+
+
     this.initFormBuilder();
     this.dataService.tipoDocumentos().listar().subscribe(response => {
+      console.log(response);
+
       this.tipoDocumentos = response;
     });
   }
@@ -49,21 +68,112 @@ export class RepresentanteLegalEditComponent implements OnInit {
 
   initFormBuilder() {
     this.form = this.formBuilder.group({
-      idRepresentanteLegal:  [null],
-      numeroPartida:  [null],
-      razonSocial:  [null],
-      numeroDocumento:  [null],
-      direccion:  [null],
-      correo:  [null],
-      telefoMovil:  [null]
+      idRepresentanteLegal: [null],
+      numeroPartida: ['', [Validators.required]],
+      idPersona: [null],
+      razonSocial: ['', [Validators.required]],
+      tipoDoc: new FormControl(),
+      numeroDocumento: ['', [Validators.required]],
+      direccion: ['', [Validators.required]],
+      correo: ['', [Validators.required, Validators.email]],
+      telefoMovil: ['', [Validators.required]]
     });
+
+  }
+
+  private loadDataFrom() {
+    if (this.dataRepresentanteLegal != null && this.dataRepresentanteLegal.idRepresentanteLegal > 0) {
+      this.dataService.representantes().listarPorId(this.dataRepresentanteLegal.idRepresentanteLegal).subscribe(data => {
+        //this.form.patchValue(data);
+        this.repLegalQueVieneDeBD = data;
+        console.log(data);
+        //this.form.controls.numeroPartida.patchValue(this.repLegalQueVieneDeBD.numeroPartida);
+        console.log(this.form.controls);
+
+        this.form.patchValue({
+          idRepresentanteLegal: this.repLegalQueVieneDeBD.idRepresentanteLegal,
+          numeroPartida: this.repLegalQueVieneDeBD.numeroPartida,
+          idPersona: this.repLegalQueVieneDeBD.persona.idPersona,
+          razonSocial: this.repLegalQueVieneDeBD.persona.razonSocial,
+          //tipoDoc: this.repLegalQueVieneDeBD.persona.tipoDocumento.idTipoDocumento,
+          numeroDocumento: this.repLegalQueVieneDeBD.persona.numeroDocumento,
+          direccion: this.repLegalQueVieneDeBD.persona.direccion,
+          correo: this.repLegalQueVieneDeBD.persona.correo,
+          telefoMovil: this.repLegalQueVieneDeBD.persona.telefoMovil
+        });
+        this.tipoDoc = this.repLegalQueVieneDeBD.persona.tipoDocumento.idTipoDocumento;
+      });
+    }
+
+    this.titulo = "Actualizar Rep. Legal"
   }
 
 
-  save(){
+  save() {
     this.spinner.show();
 
+    //Construye el json a enviar
+    this.setdata();
+
+    if (this.form.value.idRepresentanteLegal > 0) {
+      // ACTUALIZAR
+      console.log(this.representanteLegalDTO);
+      this.dataService.representantes().actualizar(this.representanteLegalDTO).pipe(
+        catchError((e) => of(null)),
+        finalize(() => { this.spinner.hide(); })
+      ).subscribe(response => {
+
+        console.log(response);
+
+
+        this.dataService.representantes().setNotificarGuardado(response);
+
+        if (response) {
+          this.dataService.Message().msgSuccess('Se modificado correctamente', () => {
+
+          });
+        } else {
+          this.dataService.Message().msgError('Ocurrieron algunos problemas al crear el registro, por favor espere unos segundos y reintenta. ', () => {
+            return;
+          });
+        }
+      });
+
+    } else {
+
+      console.log(this.representanteLegalDTO);
+
+      //GUARDAR
+
+      this.dataService.representantes().create(this.representanteLegalDTO).pipe(
+        catchError((e) => of(null)),
+        finalize(() => { this.spinner.hide(); })
+      ).subscribe(response => {
+
+        this.dataService.representantes().setNotificarGuardado(response);
+
+        if (response) {
+          this.dataService.Message().msgSuccess('Se creo correctamente', () => {
+
+          });
+        } else {
+          this.dataService.Message().msgError('Ocurrieron algunos problemas al crear el registro, por favor espere unos segundos y reintenta. ', () => {
+            return;
+          });
+        }
+      });
+    }
+
+
+
+
+    this.cerrar();
+  }
+
+  setdata() {
+    this.repLegal.idRepresentanteLegal = this.form.value.idRepresentanteLegal;
     this.repLegal.numeroPartida = this.form.value.numeroPartida;
+    this.persona.idPersona = this.form.value.idPersona;
     this.persona.razonSocial = this.form.value.razonSocial;
     this.persona.numeroDocumento = this.form.value.numeroDocumento;
     this.persona.direccion = this.form.value.direccion;
@@ -76,35 +186,22 @@ export class RepresentanteLegalEditComponent implements OnInit {
 
     this.representanteLegalDTO.persona = this.persona;
     this.representanteLegalDTO.representanteLegal = this.repLegal;
-
-    
-    this.dataService.representantes().create(this.representanteLegalDTO).pipe(
-      catchError((e) => of(null)),
-      finalize(() => { this.spinner.hide(); })
-    ).subscribe(response => {
-
-      this.dataService.representantes().setNotificarGuardado(response);
-
-      
-
-      if (response) {
-        this.dataService.Message().msgSuccess('Se creo correctamente', () => {
-
-        });
-      }  else {
-        this.dataService.Message().msgError('Ocurrieron algunos problemas al crear el registro, por favor espere unos segundo su reintenta. ', () => {
-          return;
-        });
-      }
-    });
-    
-
-    this.cerrar();
   }
 
 
   cerrar(): void {
     this.dialogRef.close();
+  }
+
+  comprobarSiEsRuc() {
+
+    if (!this.tipoDoc) {
+      return false;
+    } else {
+
+      return (this.tipoDocumentos.filter(elemento => elemento.idTipoDocumento == this.tipoDoc)[0].abreviatura == 'RUC') ? true : false;
+    }
+
   }
 
 }

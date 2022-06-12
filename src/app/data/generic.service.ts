@@ -10,6 +10,8 @@ export class GenericService {
 
   private url: string;
 
+  //http://localhost:9091/api/representantes/list-representante
+
   constructor(
     private _http: HttpClient,
     private configuration: Configuration
@@ -33,9 +35,13 @@ export class GenericService {
     return restangular;
   }
 
+  //http://localhost:9091/api
   all(path: string): GenericService {
+    //representantes
+    //list-representante
     const restangular = this.clone();
     restangular.url = restangular.url + '/' + path;
+    //http://localhost:9091/api/representantes/list-representante
     return restangular;
   }
 

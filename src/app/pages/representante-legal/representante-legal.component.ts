@@ -1,13 +1,11 @@
-import { RepresentanteLegal } from './../../model/RepresentanteLegal';
-import { Component, OnInit , ViewChild} from '@angular/core';
-import { RepresentantelegalService } from './../../data/representantelegal.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RepresentanteLegalEditComponent } from './representante-legal-edit/representante-legal-edit.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { catchError, finalize } from 'rxjs/operators';
-import { of, switchMap } from 'rxjs';
+import { of } from 'rxjs';
 import { DataService } from 'src/app/data/data.service';
 
 @Component({
@@ -37,7 +35,7 @@ export class RepresentanteLegalComponent implements OnInit {
     //Cuando guarda tiene que consultar la base de datos
     this.dataService.representantes().getNotificarGuardado().subscribe(response => {
       this.cargarGrilla();
-      
+
     });
   }
 
@@ -51,8 +49,13 @@ export class RepresentanteLegalComponent implements OnInit {
     });
   }
 
-  eliminar(replegalRow?: any): void{
-    
+  eliminar(replegalRow?: any): void {
+
+    this.dataService.representantes().eliminar(replegalRow.idRepresentanteLegal)
+      .subscribe(response => {
+        this.cargarGrilla();
+      });
+
   }
 
   cargarGrilla() {
@@ -62,7 +65,7 @@ export class RepresentanteLegalComponent implements OnInit {
     ).subscribe((response: any) => {
 
       console.log(response);
-      
+
 
       if (response) {
         this.listaRepresentanteLegal = response;

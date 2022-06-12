@@ -26,7 +26,7 @@
       <div *ngIf="comprobarSiEsRuc(); else esDNI">
         <mat-form-field appearance="fill">
           <mat-label>Número de RUC</mat-label>
-          <input matInput placeholder="N° Documento DNI" formControlName="numeroDocumento" minlength="11" maxlength="11" #message>
+          <input matInput placeholder="N° Documento" formControlName="numeroDocumento" minlength="11" maxlength="11" #message>
           <mat-hint align="start" ><mat-label style="color: forestgreen;">Max 11 dígitos</mat-label> </mat-hint>
           <mat-hint align="end"><mat-label style="color: forestgreen;">{{message.value.length}} / 11</mat-label></mat-hint>
         </mat-form-field>
@@ -36,7 +36,7 @@
       <ng-template #esDNI>
         <mat-form-field appearance="fill">
           <mat-label>Número de DNI</mat-label>
-          <input matInput placeholder="N° Documento RUC" formControlName="numeroDocumento" minlength="8" maxlength="8" #message>
+          <input matInput placeholder="N° Documento" formControlName="numeroDocumento" minlength="8" maxlength="8" #message>
           <mat-hint align="start" ><mat-label style="color: forestgreen;">Max 8 dígitos</mat-label> </mat-hint>
           <mat-hint align="end"><mat-label style="color: forestgreen;">{{message.value.length}} / 8</mat-label></mat-hint>        
         </mat-form-field>

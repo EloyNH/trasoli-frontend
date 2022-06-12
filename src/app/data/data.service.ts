@@ -1,3 +1,4 @@
+import { Replegal1Service } from './replegal1.service';
 import { RepresentantelegalService } from './representantelegal.service';
 import { Injectable } from '@angular/core';
 import { GiroNegocioService } from './giro-negocio.service';
@@ -15,7 +16,8 @@ export class DataService {
     private message:MessageService,
     private personal:PersonalService,
     private tipoDocumento: TipoDocumentoService,
-    private representanteLegal: RepresentantelegalService
+    private representanteLegal: RepresentantelegalService,
+    private replegal1: Replegal1Service
   ) { }
 
   giroNegocios():GiroNegocioService{
@@ -36,6 +38,10 @@ export class DataService {
 
   representantes():RepresentantelegalService{
     return this.representanteLegal;
+  }
+
+  representantes1():Replegal1Service{
+    return this.replegal1;
   }
 
   

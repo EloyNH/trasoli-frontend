@@ -1,3 +1,4 @@
+import { Replegal1Component } from './pages/replegal1/replegal1.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { GiroNegocioComponent } from './pages/giro-negocio/giro-negocio.component';
@@ -16,6 +17,7 @@ const routes: Routes = [
   },
   { path: 'pages/giroNegocio', component: GiroNegocioComponent },
   { path: 'pages/representantelegal', component: RepresentanteLegalComponent },
+  { path: 'pages/replegal1', component: Replegal1Component },
   {
     path: 'pages/personal', component: PersonalListComponent, 
     children: [

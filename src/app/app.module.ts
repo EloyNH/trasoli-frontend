@@ -17,6 +17,8 @@ import { PersonalListComponent } from './pages/personal/personal-list/personal-l
 import { PersonalEditComponent } from './pages/personal/personal-edit/personal-edit.component';
 import { RepresentanteLegalComponent } from './pages/representante-legal/representante-legal.component';
 import { RepresentanteLegalEditComponent } from './pages/representante-legal/representante-legal-edit/representante-legal-edit.component';
+import { Replegal1Component } from './pages/replegal1/replegal1.component';
+import { ReplegalEditComponent } from './pages/replegal1/replegal-edit/replegal-edit.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { RepresentanteLegalEditComponent } from './pages/representante-legal/rep
     PersonalListComponent,
     PersonalEditComponent,
     RepresentanteLegalComponent,
-    RepresentanteLegalEditComponent
+    RepresentanteLegalEditComponent,
+    Replegal1Component,
+    ReplegalEditComponent
   ],
   imports: [
     BrowserModule,

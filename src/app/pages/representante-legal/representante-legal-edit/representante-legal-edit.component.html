@@ -22,13 +22,21 @@
     </mat-form-field>  
     <br>
 
-    <div *ngIf="tipoDoc">
-      <div *ngIf="comprobarSiEsRuc(); else esDNI">
+    <mat-form-field appearance="fill">
+      <mat-label>Número de Documento</mat-label>
+      <input matInput placeholder="N° Documento RUC" formControlName="numeroDocumento" minlength="11" maxlength="11" #message1>
+      <mat-hint align="start" ><mat-label style="color: forestgreen;">Max 11 dígitos</mat-label> </mat-hint>
+      <mat-hint align="end"><mat-label style="color: forestgreen;">{{message1.value.length}} / 11</mat-label></mat-hint>        
+    </mat-form-field>
+    <br>
+
+    <!-- <div *ngIf="tipoDoc">
+      <div *ngIf="comprobarSiEsRucboolean; else esDNI">
         <mat-form-field appearance="fill">
           <mat-label>Número de RUC</mat-label>
-          <input matInput placeholder="N° Documento DNI" formControlName="numeroDocumento" minlength="11" maxlength="11" #message>
+          <input matInput placeholder="N° Documento DNI" formControlName="numeroDocumento" minlength="11" maxlength="11" #message3>
           <mat-hint align="start" ><mat-label style="color: forestgreen;">Max 11 dígitos</mat-label> </mat-hint>
-          <mat-hint align="end"><mat-label style="color: forestgreen;">{{message.value.length}} / 11</mat-label></mat-hint>
+          <mat-hint align="end"><mat-label style="color: forestgreen;">{{message3.value.length}} / 11</mat-label></mat-hint>
         </mat-form-field>
         <br>
       </div>
@@ -36,13 +44,13 @@
       <ng-template #esDNI>
         <mat-form-field appearance="fill">
           <mat-label>Número de DNI</mat-label>
-          <input matInput placeholder="N° Documento RUC" formControlName="numeroDocumento" minlength="8" maxlength="8" #message>
+          <input matInput placeholder="N° Documento RUC" formControlName="numeroDocumento" minlength="8" maxlength="8" #message4>
           <mat-hint align="start" ><mat-label style="color: forestgreen;">Max 8 dígitos</mat-label> </mat-hint>
-          <mat-hint align="end"><mat-label style="color: forestgreen;">{{message.value.length}} / 8</mat-label></mat-hint>        
+          <mat-hint align="end"><mat-label style="color: forestgreen;">{{message4.value.length}} / 8</mat-label></mat-hint>        
         </mat-form-field>
         <br>
       </ng-template>
-    </div>
+    </div> -->
     
     <mat-form-field appearance="fill">
       <mat-label>Dirección</mat-label>
@@ -56,9 +64,9 @@
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Celular</mat-label>
-      <input matInput placeholder="Celular" formControlName="telefoMovil" minlength="8" maxlength="8" #message>
+      <input matInput placeholder="Celular" formControlName="telefoMovil" minlength="9" maxlength="9" #message2>
       <mat-hint align="start" ><mat-label style="color: forestgreen;">Max 9 dígitos</mat-label> </mat-hint>
-      <mat-hint align="end"><mat-label style="color: forestgreen;">{{message.value.length}} / 8</mat-label></mat-hint> 
+      <mat-hint align="end"><mat-label style="color: forestgreen;">{{message2.value.length}} / 9</mat-label></mat-hint> 
     </mat-form-field>
   </form>
 </div>

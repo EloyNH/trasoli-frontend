@@ -39,6 +39,11 @@ export class RepresentanteLegalComponent implements OnInit {
     });
   }
 
+  // ngAfterViewInit() {
+  //   this.dataSource.paginator = this.paginator;
+  //   this.dataSource.sort = this.sort;
+  // }
+
   openDialog(replegalRow?: any): void {
     const dialogRef = this.dialog.open(RepresentanteLegalEditComponent, {
       data: replegalRow,
@@ -64,9 +69,6 @@ export class RepresentanteLegalComponent implements OnInit {
       finalize(() => { })
     ).subscribe((response: any) => {
 
-      console.log(response);
-
-
       if (response) {
         this.listaRepresentanteLegal = response;
         this.setData(this.listaRepresentanteLegal);
@@ -84,12 +86,14 @@ export class RepresentanteLegalComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
+    console.log('event.target: ', (event.target as HTMLInputElement).value);
+    
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    // if (this.dataSource.paginator) {
+    //   this.dataSource.paginator.firstPage();
+    // }
   }
 
 }

@@ -38,6 +38,8 @@ export class RepresentanteLegalEditComponent implements OnInit {
 
   tipoDocumentos: TipoDocumento[];
 
+  comprobarSiEsRucboolean:boolean = false;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -59,8 +61,6 @@ export class RepresentanteLegalEditComponent implements OnInit {
 
     this.initFormBuilder();
     this.dataService.tipoDocumentos().listar().subscribe(response => {
-      console.log(response);
-
       this.tipoDocumentos = response;
     });
   }
@@ -86,10 +86,7 @@ export class RepresentanteLegalEditComponent implements OnInit {
       this.dataService.representantes().listarPorId(this.dataRepresentanteLegal.idRepresentanteLegal).subscribe(data => {
         //this.form.patchValue(data);
         this.repLegalQueVieneDeBD = data;
-        console.log(data);
         //this.form.controls.numeroPartida.patchValue(this.repLegalQueVieneDeBD.numeroPartida);
-        console.log(this.form.controls);
-
         this.form.patchValue({
           idRepresentanteLegal: this.repLegalQueVieneDeBD.idRepresentanteLegal,
           numeroPartida: this.repLegalQueVieneDeBD.numeroPartida,
@@ -116,12 +113,7 @@ export class RepresentanteLegalEditComponent implements OnInit {
     this.setdata();
 
     if (this.form.value.idRepresentanteLegal > 0) {
-
-      console.log(this.representanteLegalDTO);
-
-
       // ACTUALIZAR
-      console.log(this.representanteLegalDTO);
       this.dataService.representantes().actualizar(this.representanteLegalDTO).pipe(
         catchError((e) => of(null)),
         finalize(() => { this.spinner.hide(); })
@@ -144,8 +136,6 @@ export class RepresentanteLegalEditComponent implements OnInit {
       });
 
     } else {
-
-      console.log(this.representanteLegalDTO);
 
       //GUARDAR
 
@@ -177,6 +167,10 @@ export class RepresentanteLegalEditComponent implements OnInit {
   setdata() {
     if (this.tipoDoc != undefined) {
       this.tipoDocumento.idTipoDocumento = this.tipoDoc;
+
+      if(this.tipoDocumentos.filter(elemento => elemento.idTipoDocumento == this.tipoDoc)[0].abreviatura == 'RUC'){
+
+      }
     }
 
     this.persona.idPersona = this.form.value.idPersona;
